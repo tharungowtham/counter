@@ -26,7 +26,19 @@ const counterReducer = (state, action) => {
 };
 
 const Home = () => {
-  const { state } = useContext(CounterContext);
+  const { state,dispatch } = useContext(CounterContext);
+  const fetchCounter = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/mycounter');
+      dispatch({ type: 'MY_SET', mycount: response.data.mycount,count:response.data.count });
+    } catch (err) {
+      console.error(err);
+    }
+  }, [dispatch]);
+  
+  useEffect(() => {
+    fetchCounter();
+  }, [fetchCounter]);
 
   return (
     <div>
