@@ -1,7 +1,11 @@
-// express-server/app.js
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import 'dotenv/config'
+import express from 'express'
+import cors from 'cors';
+import queryString from 'query-string'
+import cookieParser from 'cookie-parser'
+import axios from 'axios'
+import jwt from 'jsonwebtoken'
+import mongoose from "mongoose"
 
 const app = express();
 const PORT = process.env.PORT || 5000;
