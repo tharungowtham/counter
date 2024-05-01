@@ -1,6 +1,9 @@
-import React, { useReducer } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useReducer,useCallback,useEffect,useState } from 'react';
+import axios from'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
+import Callback from './components/Callback';
+import Login from './components/Login';
 import Counter from './components/Counter';
 import MyCounter from './components/MyCounter';
 import { CounterContext } from './components/CounterContext';
@@ -26,31 +29,31 @@ const counterReducer = (state, action) => {
 
 const App = () => {
   const [state, dispatch] = useReducer(counterReducer, { count: 0, mycount: 0 });
+  const [loggedIn, setLoggedIn] = useState(null);
+  const [user, setUser] = useState(null)
 
-  return (
-    <CounterContext.Provider value={{ state, dispatch }}>
+  const checkLoginState = useCallback(async () => {
+    try {
+      const {data: { loggedIn: logged_in, user }} = await axios.get(`http://localhost:5000/auth/logged_in`, {withCredentials: true})
+      setLoggedIn(logged_in)
+      user && setUser(user)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+  useEffect(() => {
+    checkLoginState()
+  }, [checkLoginState])
+return (
+    <CounterContext.Provider value={{ state, dispatch,loggedIn,user,checkLoginState}}>
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/counter">Counter</Link>
-              </li>
-              <li>
-                <Link to="/mycounter">MY_Counter</Link>
-              </li>
-            </ul>
-          </nav>
-
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/counter" element={<Counter />} />
             <Route path="/mycounter" element={<MyCounter />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/auth/callback/" element={<Callback AuthContext={CounterContext} />} /> 
           </Routes>
-        </div>
       </Router>
     </CounterContext.Provider>
   );
