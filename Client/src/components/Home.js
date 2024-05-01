@@ -7,13 +7,13 @@ const Home = () => {
   const { state, dispatch,loggedIn,checkLoginState } = useContext(CounterContext);
   const fetchCounter = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/mycounter');
+      const response = await axios.get('http://localhost:5000/api/mycounter',{withCredentials:true});
       dispatch({ type: 'MY_SET', mycount: response.data.mycount, count: response.data.count });
     } catch (err) {
       console.error(err);
     }
   }, [dispatch]);
-  
+
   useEffect(() => {
     fetchCounter();
     checkLoginState();
@@ -35,7 +35,7 @@ const Home = () => {
                 <Link to="/mycounter">MY_Counter</Link>
               </li>
               <li>
-                <Link to="/login">login</Link>
+                <Link to="/logout">Logout</Link>
               </li>
             </ul>
           </nav>

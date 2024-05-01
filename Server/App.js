@@ -144,9 +144,10 @@ app.post('/auth/logout', (_, res) => {
 app.get('/api/counter', async (req, res) => {
 
     try {
-        
-        const counter = await Counter.findOne();
-
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        const counter = await Counter.findOne({email:user.email});
         res.json(counter);
     } catch (err) {
         console.error(err);
@@ -155,11 +156,12 @@ app.get('/api/counter', async (req, res) => {
 });
 
 app.get('/api/mycounter', async (req, res) => {
-    // console.log("Reached GET method")
     try {
         
-        const counter = await Counter.findOne();
-        // console.log(counter);
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        const counter = await Counter.findOne({email:user.email});
         res.json(counter);
     } catch (err) {
         console.error(err);
@@ -168,9 +170,12 @@ app.get('/api/mycounter', async (req, res) => {
 });
 app.post('/api/counter/increment', async (req, res) => {
     try {
-        let counter = await Counter.findOne();
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        let counter = await Counter.findOne({email:user.email});
         if (!counter) {
-            counter = new Counter();
+            counter = new Counter({email:user.email});
         }
         counter.count++;
         await counter.save();
@@ -182,9 +187,12 @@ app.post('/api/counter/increment', async (req, res) => {
 });
 app.post('/api/counter/myincrement', async (req, res) => {
     try {
-        let counter = await Counter.findOne();
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        let counter = await Counter.findOne({email:user.email});
         if (!counter) {
-            counter = new Counter();
+            counter = new Counter({email:user.email});
         }
         counter.mycount++;
         await counter.save();
@@ -197,9 +205,12 @@ app.post('/api/counter/myincrement', async (req, res) => {
 
 app.post('/api/counter/decrement', async (req, res) => {
     try {
-        let counter = await Counter.findOne();
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        let counter = await Counter.findOne({email:user.email});
         if (!counter) {
-            counter = new Counter();
+            counter = new Counter({email:user.email});
         }
         counter.count--;
         await counter.save();
@@ -211,9 +222,12 @@ app.post('/api/counter/decrement', async (req, res) => {
 });
 app.post('/api/counter/mydecrement', async (req, res) => {
     try {
-        let counter = await Counter.findOne();
+        const token = req.cookies.token;
+        if (!token) return res.json({ loggedIn: false })
+        const { user } = jwt.verify(token, config.tokenSecret)
+        let counter = await Counter.findOne({email:user.email});
         if (!counter) {
-            counter = new Counter();
+            counter = new Counter({email:user.email});
         }
         counter.mycount--;
         await counter.save();

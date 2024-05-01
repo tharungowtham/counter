@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Callback from './components/Callback';
 import Login from './components/Login';
+import Logout from './components/Logout';
 import Counter from './components/Counter';
 import MyCounter from './components/MyCounter';
 import { CounterContext } from './components/CounterContext';
@@ -52,6 +53,7 @@ return (
             <Route path="/counter" element={<Counter />} />
             <Route path="/mycounter" element={<MyCounter />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/auth/callback/" element={<Callback AuthContext={CounterContext} />} /> 
           </Routes>
       </Router>

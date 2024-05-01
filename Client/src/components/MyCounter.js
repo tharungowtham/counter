@@ -22,7 +22,7 @@ const MyCounter = () => {
 
   const incrementCounter = useCallback(async () => {
     try {
-      await axios.post('http://localhost:5000/api/counter/myincrement',{withCredentials:true});
+      await axios.post('http://localhost:5000/api/counter/myincrement',null,{withCredentials:true});
       dispatch({ type: 'MY_INCREMENT' });
     } catch (err) {
       console.error(err);
@@ -31,7 +31,7 @@ const MyCounter = () => {
 
   const decrementCounter = useCallback(async () => {
     try {
-      await axios.post('http://localhost:5000/api/counter/mydecrement',{withCredentials:true});
+      await axios.post('http://localhost:5000/api/counter/mydecrement',null,{withCredentials:true});
       dispatch({ type: 'MY_DECREMENT' });
     } catch (err) {
       console.error(err);
